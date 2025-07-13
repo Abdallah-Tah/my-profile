@@ -358,6 +358,26 @@ button:focus-visible {
   opacity: 0;
 }
 
+.animation-delay-1000 {
+  animation-delay: 1s;
+  opacity: 0;
+}
+
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+  opacity: 0;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+  opacity: 0;
+}
+
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+  opacity: 0;
+}
+
 /* Enhanced Hover Effects */
 .hover-lift {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
