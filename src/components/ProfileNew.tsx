@@ -2,10 +2,44 @@ import { Button } from "./ui/button";
 
 const Profile = () => {
   const handleDownloadResume = () => {
-    const link = document.createElement("a");
-    link.href = "./Abdallah_Mohamed_Resume_v2.pdf";
-    link.download = "Abdallah_Mohamed_Resume_v2.pdf";
-    link.click();
+    // Detect mobile devices
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+    const resumeUrl = "./Abdallah_Mohamed_Resume_v2.pdf";
+
+    if (isMobile) {
+      // For mobile devices, especially iOS, open in new tab
+      const link = document.createElement("a");
+      link.href = resumeUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+
+      if (isIOS) {
+        // iOS specific handling
+        link.download = "Abdallah_Mohamed_Resume_v2.pdf";
+      }
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Fallback: if download doesn't work, try window.open
+      setTimeout(() => {
+        window.open(resumeUrl, "_blank");
+      }, 100);
+    } else {
+      // Desktop download
+      const link = document.createElement("a");
+      link.href = resumeUrl;
+      link.download = "Abdallah_Mohamed_Resume_v2.pdf";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   };
 
   const handleContactMe = () => {
@@ -15,7 +49,7 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 animate-gradient-x">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white overflow-hidden">
+      <div className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 text-white overflow-hidden hero-section">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute top-0 left-0 w-full h-full">
@@ -24,38 +58,51 @@ const Profile = () => {
           <div className="absolute bottom-20 left-1/3 w-40 h-40 bg-blue-300/10 rounded-full blur-3xl animate-pulse-slow"></div>
         </div>
 
-        <div className="relative max-w-6xl mx-auto px-6 py-16">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
           <div className="text-center animate-fade-in-up">
-            <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl transform hover:scale-110 transition-all duration-500 hover:shadow-3xl animate-fade-in">
+            <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 sm:mb-6 rounded-full overflow-hidden border-4 border-white/30 shadow-2xl transform hover:scale-110 transition-all duration-500 hover:shadow-3xl animate-fade-in">
               <img
                 src="./abdallah.jpeg"
-                alt="Abdallah Mohamed - Full Stack Developer"
-                className="w-full h-full object-cover hover:brightness-110 transition-all duration-300"
+                alt="Abdallah Mohamed"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to initials if image fails to load
+                  e.currentTarget.style.display = "none";
+                  e.currentTarget.parentElement!.classList.add(
+                    "bg-white/20",
+                    "backdrop-blur-sm",
+                    "flex",
+                    "items-center",
+                    "justify-center"
+                  );
+                  e.currentTarget.parentElement!.innerHTML =
+                    '<span class="text-2xl sm:text-4xl font-bold text-white">AM</span>';
+                }}
               />
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text animate-fade-in-up animation-delay-200">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text animate-fade-in-up animation-delay-200">
               Abdallah Mohamed
             </h1>
             <div className="animate-typing-container animate-fade-in-up animation-delay-400">
-              <p className="text-xl md:text-2xl text-blue-100 mb-6 animate-typing">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-4 sm:mb-6">
                 Full-Stack Developer & Software Engineer
               </p>
             </div>
-            <p className="text-lg text-blue-50 max-w-2xl mx-auto animate-fade-in-up animation-delay-600">
+            <p className="text-sm sm:text-base lg:text-lg text-blue-50 max-w-2xl mx-auto px-4 animate-fade-in-up animation-delay-600">
               U.S. Citizen • 8+ Years Experience • Passionate about Clean
               Architecture
             </p>
 
             {/* Animated CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up animation-delay-800">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 px-4 sm:px-0 animate-fade-in-up animation-delay-800 justify-center items-center">
               <Button
-                className="bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 hover:scale-105 font-semibold px-8 py-3 rounded-lg border border-white/30 transition-all duration-300 hover:shadow-lg"
+                className="mobile-button w-full sm:w-auto bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 hover:scale-105 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg border border-white/30 transition-all duration-300 hover:shadow-lg text-sm sm:text-base min-h-[48px]"
                 onClick={handleDownloadResume}
               >
                 📄 Download Resume
               </Button>
               <Button
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:scale-105 font-semibold px-8 py-3 rounded-lg border border-white/30 transition-all duration-300 hover:shadow-lg"
+                className="mobile-button w-full sm:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 hover:scale-105 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg border border-white/30 transition-all duration-300 hover:shadow-lg text-sm sm:text-base min-h-[48px]"
                 onClick={handleContactMe}
               >
                 💬 Contact Me
@@ -66,49 +113,49 @@ const Profile = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Contact Information */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-gray-100 hover:shadow-2xl transition-all duration-500 animate-slide-in-left">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
-            <span className="w-2 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-4 animate-pulse-glow"></span>
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-8 mb-6 sm:mb-8 border border-gray-100 hover:shadow-2xl transition-all duration-500 animate-slide-in-left mobile-card">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
+            <span className="w-2 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full mr-3 sm:mr-4 animate-pulse-glow"></span>
             Contact Information
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="flex items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-blue-50 cursor-pointer group">
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6">
+            <div className="flex items-start sm:items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-blue-50 cursor-pointer group contact-item">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors duration-300 flex-shrink-0">
                 <span className="text-blue-600 font-semibold">📧</span>
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm text-gray-500 group-hover:text-blue-600 transition-colors duration-300">
                   Email
                 </p>
-                <p className="text-gray-800 font-medium group-hover:text-blue-700 transition-colors duration-300">
+                <p className="text-sm sm:text-base text-gray-800 font-medium group-hover:text-blue-700 transition-colors duration-300 break-words">
                   abdallahtmohamed86@gmail.com
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-green-50 cursor-pointer group">
-              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors duration-300">
+            <div className="flex items-start sm:items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-green-50 cursor-pointer group contact-item">
+              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors duration-300 flex-shrink-0">
                 <span className="text-green-600 font-semibold">📞</span>
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm text-gray-500 group-hover:text-green-600 transition-colors duration-300">
                   Phone
                 </p>
-                <p className="text-gray-800 font-medium group-hover:text-green-700 transition-colors duration-300">
+                <p className="text-sm sm:text-base text-gray-800 font-medium group-hover:text-green-700 transition-colors duration-300">
                   (207) 409-7887
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-purple-50 cursor-pointer group">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors duration-300">
+            <div className="flex items-start sm:items-center space-x-3 hover:transform hover:scale-105 transition-all duration-300 p-3 rounded-lg hover:bg-purple-50 cursor-pointer group contact-item">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors duration-300 flex-shrink-0">
                 <span className="text-purple-600 font-semibold">📍</span>
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <p className="text-sm text-gray-500 group-hover:text-purple-600 transition-colors duration-300">
                   Location
                 </p>
-                <p className="text-gray-800 font-medium group-hover:text-purple-700 transition-colors duration-300">
+                <p className="text-sm sm:text-base text-gray-800 font-medium group-hover:text-purple-700 transition-colors duration-300">
                   Brunswick, ME 04011
                 </p>
               </div>
@@ -139,14 +186,14 @@ const Profile = () => {
         </div>
 
         {/* Skills Section */}
-        <div className="professional-card rounded-2xl shadow-xl p-8 mb-8 border border-gray-100 hover-lift animate-slide-in-left">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
-            <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-teal-600 rounded-full mr-4 animate-pulse-glow"></span>
+        <div className="professional-card rounded-2xl shadow-xl p-4 sm:p-8 mb-6 sm:mb-8 border border-gray-100 hover-lift animate-slide-in-left">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 flex items-center">
+            <span className="w-2 h-6 sm:h-8 bg-gradient-to-b from-green-500 to-teal-600 rounded-full mr-3 sm:mr-4 animate-pulse-glow"></span>
             <span className="gradient-text">Skills & Technologies</span>
           </h2>
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             <div className="animate-fade-in-up animation-delay-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 text-center">
                 Backend Development
               </h3>
               <div className="space-y-2">
@@ -162,8 +209,7 @@ const Profile = () => {
                 ].map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium skill-badge hover:bg-blue-100 hover:text-blue-800 cursor-pointer"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="bg-blue-50 text-blue-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium skill-badge hover:bg-blue-100 hover:text-blue-800 cursor-pointer"
                   >
                     {skill}
                   </div>
@@ -171,7 +217,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="animate-fade-in-up animation-delay-400">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 text-center">
                 Frontend & Mobile
               </h3>
               <div className="space-y-2">
@@ -187,8 +233,7 @@ const Profile = () => {
                 ].map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-green-50 text-green-700 px-3 py-2 rounded-lg text-sm font-medium skill-badge hover:bg-green-100 hover:text-green-800 cursor-pointer"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="bg-green-50 text-green-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium skill-badge hover:bg-green-100 hover:text-green-800 cursor-pointer"
                   >
                     {skill}
                   </div>
@@ -196,7 +241,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="animate-fade-in-up animation-delay-600">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 text-center">
                 Databases & Cloud
               </h3>
               <div className="space-y-2">
@@ -212,8 +257,7 @@ const Profile = () => {
                 ].map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-purple-50 text-purple-700 px-3 py-2 rounded-lg text-sm font-medium skill-badge hover:bg-purple-100 hover:text-purple-800 cursor-pointer"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="bg-purple-50 text-purple-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium skill-badge hover:bg-purple-100 hover:text-purple-800 cursor-pointer"
                   >
                     {skill}
                   </div>
@@ -221,7 +265,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="animate-fade-in-up animation-delay-800">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 text-center">
                 DevOps & Systems
               </h3>
               <div className="space-y-2">
@@ -237,8 +281,7 @@ const Profile = () => {
                 ].map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-orange-50 text-orange-700 px-3 py-2 rounded-lg text-sm font-medium skill-badge hover:bg-orange-100 hover:text-orange-800 cursor-pointer"
-                    style={{ animationDelay: `${index * 0.1}s` }}
+                    className="bg-orange-50 text-orange-700 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium skill-badge hover:bg-orange-100 hover:text-orange-800 cursor-pointer"
                   >
                     {skill}
                   </div>
@@ -268,30 +311,30 @@ const Profile = () => {
                   Key Responsibilities:
                 </h4>
                 <ul className="text-gray-700 space-y-2">
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Reverse engineered and modernized legacy systems (VB.NET,
                     Access Database) into cross-platform applications using
                     Laravel, Qt C++, C#, .NET, and Python
                   </li>
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Built native mobile and desktop applications using
                     NativePHP for cross-platform deployment on iOS, Android, and
                     desktop environments
                   </li>
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Led cloud-native solution migration for in-house
                     applications using AWS and Azure services on Linux (Ubuntu)
                     infrastructure
                   </li>
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Designed and implemented secure authentication using Azure
                     AD for internal applications
                   </li>
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Developed REST and SOAP APIs for integrating legacy data
                     with modern web and mobile platforms
                   </li>
-                  <li className="hover:text-gray-900 transition-colors duration-300 hover:translate-x-1 transition-transform">
+                  <li className="transition-all duration-300 hover:text-gray-900 hover:translate-x-1">
                     • Created AI-based tools for data extraction and automated
                     reporting using Python and OpenAI APIs
                   </li>
@@ -574,23 +617,26 @@ const Profile = () => {
         </div>
 
         {/* Call to Action */}
-        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-2xl shadow-xl p-8 text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Ready to Work Together?</h2>
-          <p className="text-xl text-blue-100 mb-6">
+        {/* Call to Action */}
+        <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-2xl shadow-xl p-6 sm:p-8 text-center text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">
+            Ready to Work Together?
+          </h2>
+          <p className="text-lg sm:text-xl text-blue-100 mb-4 sm:mb-6 px-2">
             Let's discuss how I can help bring your next project to life.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col gap-3 sm:gap-4 justify-center items-center px-2">
             <Button
-              className="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-8 py-3 rounded-lg"
+              className="mobile-button w-full sm:w-auto bg-white text-blue-600 hover:bg-blue-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-sm sm:text-base min-h-[48px]"
               onClick={handleDownloadResume}
             >
-              Download Resume
+              📄 Download Resume
             </Button>
             <Button
-              className="bg-blue-500 hover:bg-blue-400 font-semibold px-8 py-3 rounded-lg border border-blue-300"
+              className="mobile-button w-full sm:w-auto bg-blue-500 hover:bg-blue-400 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-lg border border-blue-300 text-sm sm:text-base min-h-[48px]"
               onClick={handleContactMe}
             >
-              Contact Me
+              💬 Contact Me
             </Button>
           </div>
         </div>

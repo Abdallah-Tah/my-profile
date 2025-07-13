@@ -443,3 +443,108 @@ button:focus-visible {
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(99, 102, 241, 0.05);
 }
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+  /* Hero section mobile adjustments */
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  /* Button improvements for mobile */
+  .mobile-button {
+    min-height: 48px; /* Touch-friendly button size */
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: 12px 24px;
+    border-radius: 12px;
+  }
+
+  /* Text adjustments for mobile */
+  h1 {
+    font-size: 2rem !important;
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  /* Card spacing for mobile */
+  .mobile-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Skills grid mobile optimization */
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Experience cards mobile */
+  .experience-card {
+    padding: 1rem;
+  }
+
+  /* Contact section mobile */
+  .contact-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Project cards mobile */
+  .project-card {
+    padding: 1rem;
+  }
+
+  /* Navigation spacing */
+  .nav-spacing {
+    padding: 0.5rem;
+  }
+}
+
+/* Touch-friendly hover states */
+@media (hover: none) and (pointer: coarse) {
+  .skill-badge:hover,
+  .professional-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .skill-badge:active,
+  .professional-card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Improved font scaling for small screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .text-responsive {
+    font-size: 0.875rem;
+  }
+
+  .button-responsive {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Enhanced accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-slide-in-left,
+  .animate-float,
+  .animate-pulse-glow {
+    animation: none;
+  }
+
+  .hover\\:scale-105:hover,
+  .hover\\:scale-110:hover {
+    transform: none;
+  }
+}
